@@ -2,11 +2,7 @@
 import { Button } from '@/app/lib/Components'
 import React from 'react'
 export function Landing() {
-    const BUTTON_VARIANTS = {
-        primary: "bg-blue-500 hover:bg-blue-600 text-white",
-        secondary: "bg-gray-500 hover:bg-gray-600 text-white",
-        danger: "bg-red-500 hover:bg-red-600 text-white"
-      };
+
     return (
         <>
             <div className='max-w-4xl mx-auto'>
@@ -17,7 +13,7 @@ export function Landing() {
                     <Button variant={"primary"}>Primary Button</Button>
                     <Button variant={"secondary"}>Secondary Button</Button>
                     <Button variant={"danger"}>Danger Button</Button>
-
+                    <button>wasd</button>
                 </div>
             </div>
         </>

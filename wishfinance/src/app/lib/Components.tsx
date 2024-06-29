@@ -11,10 +11,10 @@ interface ButtonProps {
 export function Button({ onClick, children, className, variant = "primary" }: ButtonProps) {
 
     const BUTTON_VARIANTS = {
-        primary: "bg-blue-500 hover:bg-blue-600 text-white",
-        secondary: "bg-gray-500 hover:bg-gray-600 text-white",
-        danger: "bg-red-500 hover:bg-red-600 text-white"
+        primary: "bg-blue-500 hover:bg-blue-600 text-white py-2 px-3",
+        secondary: "bg-gray-500 hover:bg-gray-600 text-white py-2 px-3",
+        danger: "bg-red-500 hover:bg-red-600 text-white py-2 px-3"
     };
-
-    return <button className={clsx(className, BUTTON_VARIANTS[variant])} onClick={onClick}>{children}</button>;
+    const BUTTON_BASE = "rounded-lg transition-colors duration-300";
+    return <button className={clsx(className, BUTTON_BASE, BUTTON_VARIANTS[variant])} onClick={onClick}>{children}</button>;
 }
