@@ -7,3 +7,20 @@
     text-wrap: balance;
   }
 }
+
+@layer base {
+  :root {
+    --text: #1a2306;
+    --background: #f8fcee;
+    --primary: #b3df3a;
+    --secondary: ##495e0f;
+    --accent: #59e38c;
+  }
+  .dark {
+    --text: #f0f9dc;
+    --background: #0d1103;
+    --primary: #99c520;
+    --secondary: #147624;
+    --accent: #1ca64f;
+  }
+}
