@@ -20,6 +20,7 @@ const baseLayout: board = [
 ]
 
 
+
 export default function App() {
 
   const [board, setBoard] = useState<board>(baseLayout)
@@ -30,10 +31,11 @@ export default function App() {
     const location = [x, y]
     console.log("selection")
     if (checkIfIsAPiece(board, location) && checkIfIsFriendlyPiece(board, location, madeMoves)) {
-      console.log("selected piece: ", location)
       return setSelectedPiece(location)
     }
-    if (!selectedPiece) return
+    if (!selectedPiece) return;
+    
+
 
 
   }
