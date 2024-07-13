@@ -6,22 +6,22 @@ export function checkIfIsAPiece(board: board, location: number[]) {
     return true;
 }
 
-export function whoseMove(moves: string[]) {
-    if (moves == null || moves.length % 2 == 0) {
+export function whoseMove(moves: string[]){
+    if (moves.length % 2 == 0 ) {
         return "white"
     }
     return "black"
 }
 
-export function getPieceColor(piece: string){
-    if(piece == piece.toUpperCase()) return "white"
+export function getPieceColor(piece: string) {
+    if (piece == piece.toUpperCase()) return "white"
     return "black"
 }
 
 
-export function checkIfIsFriendlyPiece(board: board, location: number[], moves: string[]){
+export function checkIfIsFriendlyPiece(board: board, location: number[], moves: string[]) {
     const yourColor = whoseMove(moves)
     const pieceColor = getPieceColor(board[location[0]][location[1]])
-    if(yourColor == pieceColor) return false; 
+    if (yourColor == pieceColor) return true;
     return false;
 }

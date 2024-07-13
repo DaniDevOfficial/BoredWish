@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Display } from './Display';
 import { board } from './types/board';
-import { checkIfIsAPiece } from './functionality/checks';
+import { checkIfIsAPiece, checkIfIsFriendlyPiece } from './functionality/checks';
 
 
 // chess board layout
@@ -23,13 +23,19 @@ const baseLayout: board = [
 export default function App() {
 
   const [board, setBoard] = useState<board>(baseLayout)
-  const [selectedPiece, setSelectedPiece] = useState<number[] | null>()
-  const [madeMoves, setMadeMoves] = useState<string[] | null>()
+  const [selectedPiece, setSelectedPiece] = useState<number[]>()
+  const [madeMoves, setMadeMoves] = useState<string[]>([])
 
-  function selection(x: number, y: number){
-    if(checkIfIsAPiece(board, [x, y])) {
-      return setSelectedPiece([x, y])      
+  function selection(x: number, y: number) {
+    const location = [x, y]
+    console.log("selection")
+    if (checkIfIsAPiece(board, location) && checkIfIsFriendlyPiece(board, location, madeMoves)) {
+      console.log("selected piece: ", location)
+      return setSelectedPiece(location)
     }
+    if (!selectedPiece) return
+
+
   }
 
   return (
@@ -37,10 +43,21 @@ export default function App() {
       <div className="board">
         {board.map((row, i) => {
           return (
-            <div key={i} className="flex justify-center gap-4">
+            <div key={i} className="flex justify-center">
               {row.map((cell, j) => {
+                const isEven = (i + j) % 2 === 0;
+                let backgroundColor = isEven ? 'bg-white' : 'bg-gray-300';
+                let borderColor = ""
+                if (selectedPiece && selectedPiece[0] == i && selectedPiece[1] == j) {
+                  backgroundColor = isEven ? "bg-amber-100": "bg-amber-200"
+                  borderColor = "border-amber-500"
+                }
                 return (
-                  <div onClick={() => (selection(i, j))} key={j + " " + i} className="border-2 border-blue-500 w-10 h-10 m-2 rounded-lg flex justify-center items-center">
+                  <div
+                    onClick={() => selection(i, j)}
+                    key={j + " " + i}
+                    className={`border-2  w-10 h-10 m-0 o rounded-lg flex justify-center items-center ${backgroundColor} ${borderColor}`}
+                  >
                     {cell}
                   </div>
                 );
@@ -48,6 +65,7 @@ export default function App() {
             </div>
           );
         })}
+
       </div>
 
 
