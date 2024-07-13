@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Display } from './Display';
 import { board } from './types/board';
+import { checkIfIsAPiece } from './functionality/checks';
 
 
 // chess board layout
@@ -23,9 +24,12 @@ export default function App() {
 
   const [board, setBoard] = useState<board>(baseLayout)
   const [selectedPiece, setSelectedPiece] = useState<number[] | null>()
+  const [madeMoves, setMadeMoves] = useState<string[] | null>()
 
   function selection(x: number, y: number){
-    console.log(x + " " + y)
+    if(checkIfIsAPiece(board, [x, y])) {
+      return setSelectedPiece([x, y])      
+    }
   }
 
   return (
