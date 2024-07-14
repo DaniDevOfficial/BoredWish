@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from 'react';
 import { Display } from './Display';
 import { board } from './types/board';
@@ -13,7 +10,7 @@ const baseLayout: board = [
   ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '],
-  [' ', 'r', ' ', ' ', '', ' ', ' ', ' '],
+  [' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '],
   ['P', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   ['P', 'R', 'P', 'P', 'P', 'P', ' ', 'P'],
   ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
@@ -26,7 +23,7 @@ export default function App() {
   const [board, setBoard] = useState<board>(baseLayout)
   const [selectedPiece, setSelectedPiece] = useState<number[]>()
   const [madeMoves, setMadeMoves] = useState<string[]>([])
-  const [possibleMoves, setPossibleMoves] = useState<number[][]>([[4, 2], [3, 2]])
+  const [possibleMoves, setPossibleMoves] = useState<number[][]>([])
 
   function selection(y: number, x: number) {
     const location = [y, x]
@@ -35,9 +32,9 @@ export default function App() {
     let playerColor = "black"
     if (madeMoves.length % 2 == 0) playerColor = "white"
     if (checkIfIsAPiece(board, location) && checkIfIsFriendlyPiece(board, location, playerColor)) {
-      console.log(calculatePossibleMoves(board, location))
+      // console.log(calculatePossibleMoves(board, location))
       const tmp = calculatePossibleMoves(board, location)
-      console.log("tmp: ", tmp)
+      // console.log("tmp: ", tmp)
       setPossibleMoves(tmp)
       return setSelectedPiece(location)
     }
@@ -63,10 +60,9 @@ export default function App() {
                   borderColor = "border-amber-500";
                 }
 
-                // Check if the current cell is in the possible moves array
                 const isPossibleMove = possibleMoves.some(move => move[0] === i && move[1] === j);
                 if (isPossibleMove) {
-                  backgroundColor = "bg-green-300"; // or any other color to indicate possible move
+                  backgroundColor = "bg-green-300"; // TODO: Maybe make it like other chess apps with a circle in the middle
                 }
 
                 return (
