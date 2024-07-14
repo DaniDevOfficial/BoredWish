@@ -15,7 +15,7 @@ const baseLayout: board = [
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-  ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+  ['P', 'R', 'P', 'P', 'P', 'P', 'P', 'P'],
   ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
 ]
 
@@ -27,12 +27,11 @@ export default function App() {
   const [selectedPiece, setSelectedPiece] = useState<number[]>()
   const [madeMoves, setMadeMoves] = useState<string[]>([])
 
-  function selection(x: number, y: number) {
-    const location = [x, y]
+  function selection(y: number, x: number) {
+    const location = [y, x]
     let playerColor = "black"
     if(madeMoves.length % 2 == 0) playerColor = "white" 
     if (checkIfIsAPiece(board, location) && checkIfIsFriendlyPiece(board, location, playerColor)) {
-      console.log(location)
       console.log(calculatePossibleMoves(board, location))
       return setSelectedPiece(location)
     }

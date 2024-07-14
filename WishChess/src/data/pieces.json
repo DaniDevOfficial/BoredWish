@@ -17,22 +17,22 @@
       "bishop": {
         "name": "Bishop",
         "moves": [
-          {"direction": "diagonal", "steps": "infinite"}
+          {"direction": "diagonal", "steps": "999"}
         ]
       },
       "rook": {
         "name": "Rook",
         "moves": [
-          {"direction": "horizontal", "steps": "infinite"},
-          {"direction": "vertical", "steps": "infinite"}
+          {"direction": "horizontal", "steps": "999"},
+          {"direction": "vertical", "steps": "999"}
         ]
       },
       "queen": {
         "name": "Queen",
         "moves": [
-          {"direction": "horizontal", "steps": "infinite"},
-          {"direction": "vertical", "steps": "infinite"},
-          {"direction": "diagonal", "steps": "infinite"}
+          {"direction": "horizontal", "steps": "999"},
+          {"direction": "vertical", "steps": "999"},
+          {"direction": "diagonal", "steps": "999"}
         ]
       },
       "king": {

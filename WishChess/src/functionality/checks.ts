@@ -49,11 +49,16 @@ function pawnMovement(board: board, location: number[], goal: number[]) {
 function checkIfIsValidMove(board: board, location: number[], goal: number[]) {
     const tmpPiece = board[location[0]][location[1]]
     const goalPiece = board[goal[0]][goal[1]]
-    const [pieceColor, playerColor] = getPieceColor(tmpPiece)
+    const pieceColor = getPieceColor(tmpPiece)
     const pieceType = getPieceType(tmpPiece)
     if (pieceType == "pawn") return pawnMovement(board, location, goal)
     if (goalPiece == " ") return true
-    if (checkIfIsFriendlyPiece(board, goal, playerColor)) return false
+    if (pieceColor == getPieceColor(goalPiece)) return false
+    console.log("--------------------")
+    console.log("PieceColor: " + getPieceColor(tmpPiece))
+    console.log("GoalPiece: " + goalPiece)
+    console.log("goalcolor: " + getPieceColor(goalPiece))
+    console.log("goal " + goal)
     return true
 }
 
