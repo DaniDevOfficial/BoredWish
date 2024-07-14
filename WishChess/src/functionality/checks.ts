@@ -49,8 +49,6 @@ function IsInitialStep(color: string, yCoordinate: number) {
 }
 
 function pawnMovement(board: string[][], location: number[], goal: number[]): boolean {
-    console.log(goal)
-    console.log("-----")
     const color = getPieceColor(board[location[0]][location[1]]);
     const pieceGoal = board[goal[0]][goal[1]];
     const direction = color === "black" ? 1 : -1;
@@ -69,8 +67,7 @@ function pawnMovement(board: string[][], location: number[], goal: number[]): bo
     if (isOnlyOneForward && (goal[1] === location[1] + 1 || goal[1] === location[1] - 1) && !isEmpty && getPieceColor(pieceGoal) !== color) {
         return true;
     }
-    console.log(goal)
-    console.log(IsInitialStep(color, location[0]))
+
     return false;
 }
 
@@ -83,11 +80,11 @@ function checkIfIsValidMove(board: board, location: number[], goal: number[]) {
     if (pieceType == "pawn") return pawnMovement(board, location, goal)
     if (goalPiece == " ") return true
     if (pieceColor == getPieceColor(goalPiece)) return false
-    console.log("--------------------")
-    console.log("PieceColor: " + getPieceColor(tmpPiece))
-    console.log("GoalPiece: " + goalPiece)
-    console.log("goalcolor: " + getPieceColor(goalPiece))
-    console.log("goal " + goal)
+   // console.log("--------------------")
+   // console.log("PieceColor: " + getPieceColor(tmpPiece))
+   // console.log("GoalPiece: " + goalPiece)
+   // console.log("goalcolor: " + getPieceColor(goalPiece))
+   // console.log("goal " + goal)
     return true
 }
 
