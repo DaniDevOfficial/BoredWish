@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Display } from './Display';
 import { board } from './types/board';
-import { checkIfIsAPiece, checkIfIsFriendlyPiece } from './functionality/checks';
+import { calculatePossibleMoves, checkIfIsAPiece, checkIfIsFriendlyPiece, checkIfPathIsFree } from './functionality/checks';
 
 
 // chess board layout
@@ -29,12 +29,15 @@ export default function App() {
 
   function selection(x: number, y: number) {
     const location = [x, y]
-    console.log("selection")
-    if (checkIfIsAPiece(board, location) && checkIfIsFriendlyPiece(board, location, madeMoves)) {
+    let playerColor = "black"
+    if(madeMoves.length % 2 == 0) playerColor = "white" 
+    if (checkIfIsAPiece(board, location) && checkIfIsFriendlyPiece(board, location, playerColor)) {
+      console.log(location)
+      console.log(calculatePossibleMoves(board, location))
       return setSelectedPiece(location)
     }
     if (!selectedPiece) return;
-    
+    checkIfPathIsFree(board, selectedPiece, location, madeMoves)
 
 
 
