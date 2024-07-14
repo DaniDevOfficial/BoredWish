@@ -40,10 +40,39 @@ function getPieceType(piece: string) {
     return pieceMapping[pieceToFind];
 }
 
-function pawnMovement(board: board, location: number[], goal: number[]) {
-    return true;
+function IsInitialStep(color: string, yCoordinate: number) {
+    const initialPositions: { [key: string]: number } = {
+        "black": 1,
+        "white": 6
+    };
+    return yCoordinate === initialPositions[color];
 }
 
+function pawnMovement(board: string[][], location: number[], goal: number[]): boolean {
+    console.log(goal)
+    console.log("-----")
+    const color = getPieceColor(board[location[0]][location[1]]);
+    const pieceGoal = board[goal[0]][goal[1]];
+    const direction = color === "black" ? 1 : -1;
+    const isEmpty = pieceGoal === ' ' ? true : false
+    const isOnlyOneForward = goal[0] === location[0] + direction ? true : false
+    const isSameXAxis = goal[1] === location[1] ? true : false
+    // only one step forward when free
+    if (isOnlyOneForward && isSameXAxis && isEmpty) {
+        return true;
+    }
+    // inital 2 steps
+    if (IsInitialStep(color, location[0]) && goal[0] === location[0] + 2 * direction && isSameXAxis && isEmpty && board[location[0] + direction][location[1]] === ' ') {
+        return true;
+    }
+    // Capturing diagonally
+    if (isOnlyOneForward && (goal[1] === location[1] + 1 || goal[1] === location[1] - 1) && !isEmpty && getPieceColor(pieceGoal) !== color) {
+        return true;
+    }
+    console.log(goal)
+    console.log(IsInitialStep(color, location[0]))
+    return false;
+}
 
 // TODO: Implement if king is in check
 function checkIfIsValidMove(board: board, location: number[], goal: number[]) {
@@ -66,7 +95,7 @@ export function calculatePossibleMoves(board: string[][], location: number[]) {
     const tmpPiece = board[location[0]][location[1]];
     const pieceType = getPieceType(tmpPiece);
     const moves = movement[pieceType].moves;
-    const possibleMoves: number[][] = [];
+    let possibleMoves: number[][] = [];
     const [x, y] = location;
 
     for (const move of moves) {
@@ -102,9 +131,11 @@ export function calculatePossibleMoves(board: string[][], location: number[]) {
                 break;
         }
     }
+    // Remove duplicate moves
+    possibleMoves = Array.from(new Set(possibleMoves.map(move => JSON.stringify(move))))
+        .map(move => JSON.parse(move));
 
     return possibleMoves;
-
     function addMoves(startX: number, startY: number, dx: number, dy: number, maxSteps: number) {
         for (let step = 1; step <= maxSteps; step++) {
             const newX = startX + step * dx;
