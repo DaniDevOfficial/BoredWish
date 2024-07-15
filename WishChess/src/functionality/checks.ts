@@ -93,10 +93,10 @@ function checkIfIsValidMove(board: board, location: number[], goal: number[]) {
     const goalPiece = board[goal[0]][goal[1]]
     const pieceColor = getPieceColor(tmpPiece)
     const pieceType = getPieceType(tmpPiece)
-    console.log("--------------------")
-    console.log("PieceColor: " + getPieceColor(tmpPiece))
-    console.log("GoalPiece: " + goalPiece)
-    console.log("goal " + goal)
+    // console.log("--------------------")
+    // console.log("PieceColor: " + getPieceColor(tmpPiece))
+    // console.log("GoalPiece: " + goalPiece)
+    // console.log("goal " + goal)
     if (pieceType == "pawn") return pawnMovement(board, location, goal)
     if (goalPiece == emptyCell) return true
     if (pieceColor == getPieceColor(goalPiece)) return false
