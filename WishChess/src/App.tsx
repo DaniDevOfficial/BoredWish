@@ -9,8 +9,8 @@ const baseLayout: board = [
   ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
   ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-  [' ', ' ', ' ', 'Q', ' ', ' ', ' ', ' '],
-  [' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', 'K', ' ', ' ', ' ', ' '],
+  [' ', 'r', ' ', ' ', 'p', ' ', ' ', ' '],
   ['P', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
   ['P', 'R', 'P', 'P', 'P', 'P', ' ', 'P'],
   ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
@@ -22,7 +22,7 @@ export default function App() {
 
   const [board, setBoard] = useState<board>(baseLayout)
   const [selectedPiece, setSelectedPiece] = useState<number[]>()
-  const [madeMoves, setMadeMoves] = useState<string[]>([])
+  const [madeMoves, setMadeMoves] = useState<string[]>(["wasd"])
   const [possibleMoves, setPossibleMoves] = useState<number[][]>([])
 
   function selection(y: number, x: number) {
@@ -31,7 +31,7 @@ export default function App() {
 
     let playerColor = "black"
     if (madeMoves.length % 2 == 0) playerColor = "white"
-    if (checkIfIsAPiece(board, location) && checkIfIsFriendlyPiece(board, location, playerColor)) {
+    if (checkIfIsAPiece(board, location)) {
       // console.log(calculatePossibleMoves(board, location))
       const tmp = calculatePossibleMoves(board, location)
       // console.log("tmp: ", tmp)

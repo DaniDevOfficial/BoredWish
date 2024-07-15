@@ -2,7 +2,6 @@
       "pawn": {
         "name": "Pawn",
         "moves": [
-          {"direction": "forward", "steps": 1, "capture": false},
           {"direction": "forward", "steps": 2, "capture": false, "initial": true},
           {"direction": "diagonal-left", "steps": 1, "capture": true},
           {"direction": "diagonal-right", "steps": 1, "capture": true}

@@ -2,6 +2,10 @@ import { board } from "../types/board";
 import pieceMovements from '../data/pieces.json'
 import { PieceMovements } from "../types/moves";
 const movement: PieceMovements = pieceMovements
+const empyCell = " ";
+
+
+
 export function checkIfIsAPiece(board: board, location: number[]) {
     const currentTile = board[location[0]][location[1]];
     if (currentTile == " ") return false;
@@ -52,25 +56,26 @@ function pawnMovement(board: string[][], location: number[], goal: number[]): bo
     const color = getPieceColor(board[location[0]][location[1]]);
     const pieceGoal = board[goal[0]][goal[1]];
     const direction = color === "black" ? 1 : -1;
-    const isEmpty = pieceGoal === ' ' ? true : false
-    const isOnlyOneForward = goal[0] === location[0] + direction ? true : false
-    const isSameXAxis = goal[1] === location[1] ? true : false
+    const isEmpty = pieceGoal === empyCell
+    const isOnlyOneForward = goal[0] === location[0] + direction 
+    const isSameXAxis = goal[1] === location[1]
     console.log("---------------")
     console.log("location: ", location)
     console.log("goal: ", goal)
     console.log("is initial: ", IsInitialStep(color, location[0]))
     console.log("2", goal[0] === location[0] + 2 * direction)
     console.log("3", isSameXAxis)
+    console.log("isOnlyOneForward", isOnlyOneForward)
     console.log("4", isEmpty)
     console.log("PieceGoal: ", pieceGoal)
-    console.log("5", board[location[0] + direction][location[1]] === ' ')
+    console.log("5", board[location[0] + direction][location[1]] === empyCell)
 
     // only one step forward when free
     if (isOnlyOneForward && isSameXAxis && isEmpty) {
         return true;
     }
     // inital 2 steps
-    if (IsInitialStep(color, location[0]) && goal[0] === location[0] + 2 * direction && isSameXAxis && isEmpty && board[location[0] + direction][location[1]] === ' ') {
+    if (IsInitialStep(color, location[0]) && goal[0] === location[0] + 2 * direction && isSameXAxis && isEmpty && board[location[0] + direction][location[1]] === empyCell) {
         return true;
     }
     // Capturing diagonally
@@ -102,6 +107,7 @@ function checkIfIsValidMove(board: board, location: number[], goal: number[]) {
 export function calculatePossibleMoves(board: string[][], location: number[]) {
     const tmpPiece = board[location[0]][location[1]];
     const pieceType = getPieceType(tmpPiece);
+    const pieceColor = getPieceColor(tmpPiece);
     const moves = movement[pieceType].moves;
     let possibleMoves: number[][] = [];
     const [x, y] = location;
@@ -109,7 +115,7 @@ export function calculatePossibleMoves(board: string[][], location: number[]) {
     for (const move of moves) {
         switch (move.direction) {
             case 'forward':
-                addMoves(x, y, -1, 0, move.steps as number);
+                addPawnMoves(x, y, -1, 0, move.steps as number, pieceColor);
                 break;
             case 'backward':
                 addMoves(x, y, 1, 0, move.steps as number);
@@ -121,10 +127,10 @@ export function calculatePossibleMoves(board: string[][], location: number[]) {
                 addMoves(x, y, 0, 1, move.steps as number);
                 break;
             case 'diagonal-left':
-                addMoves(x, y, -1, -1, move.steps as number);
+                addPawnMoves(x, y, -1, -1, move.steps as number, pieceColor);
                 break;
             case 'diagonal-right':
-                addMoves(x, y, -1, 1, move.steps as number);
+                addPawnMoves(x, y, -1, 1, move.steps as number, pieceColor);
                 break;
             case 'L':
                 addKnightMoves(x, y, move.positions as number[][]);
@@ -152,7 +158,23 @@ export function calculatePossibleMoves(board: string[][], location: number[]) {
                 if (checkIfIsValidMove(board, location, [newX, newY])) {
                     possibleMoves.push([newX, newY]);
                 }
-                if (board[newX][newY] !== ' ') break;
+                if (board[newX][newY] !== empyCell) break;
+            } else {
+                break;
+            }
+        }
+    }
+
+    function addPawnMoves(startX: number, startY: number, dx: number, dy: number, maxSteps: number, color: string ) {
+        const direction = color === "black" ? -1 : 1;
+        for (let step = 1; step <= maxSteps; step++) {
+            const newX = startX + step * dx * direction;
+            const newY = startY + step * dy * direction;
+            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+                if (checkIfIsValidMove(board, location, [newX, newY])) {
+                    possibleMoves.push([newX, newY]);
+                }
+                if (board[newX][newY] !== empyCell) break;
             } else {
                 break;
             }
@@ -168,10 +190,4 @@ export function calculatePossibleMoves(board: string[][], location: number[]) {
             }
         }
     }
-}
-
-export function checkIfPathIsFree(board: board, location: number[], goal: number[], moves: string[]) {
-    const piece = getPieceType(board[location[0]][location[1]]);
-    const pieceMovement = movement[piece];
-
 }
