@@ -16,7 +16,10 @@
       "bishop": {
         "name": "Bishop",
         "moves": [
-          {"direction": "diagonal", "steps": "999"}
+          {"direction": "diagonal-left-top", "steps": "999"},
+          {"direction": "diagonal-left-bottom", "steps": "999"},
+          {"direction": "diagonal-right-top", "steps": "999"},
+          {"direction": "diagonal-right-bottom", "steps": "999"}
         ]
       },
       "rook": {
@@ -39,7 +42,10 @@
         "moves": [
           {"direction": "horizontal", "steps": 1},
           {"direction": "vertical", "steps": 1},
-          {"direction": "diagonal", "steps": 1}
+          {"direction": "diagonal-right-top", "steps": 1},
+          {"direction": "diagonal-left-top", "steps": 1},
+          {"direction": "diagonal-right-bottom", "steps": 1},
+          {"direction": "diagonal-left-bottom", "steps": 1}
         ]
       }
     
