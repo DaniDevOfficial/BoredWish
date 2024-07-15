@@ -59,17 +59,6 @@ function pawnMovement(board: string[][], location: number[], goal: number[]): bo
     const isEmpty = pieceGoal === emptyCell
     const isOnlyOneForward = goal[0] === location[0] + direction
     const isSameXAxis = goal[1] === location[1]
-    console.log("---------------")
-    console.log("location: ", location)
-    console.log("goal: ", goal)
-    console.log("is initial: ", IsInitialStep(color, location[0]))
-    console.log("2", goal[0] === location[0] + 2 * direction)
-    console.log("3", isSameXAxis)
-    console.log("isOnlyOneForward", isOnlyOneForward)
-    console.log("4", isEmpty)
-    console.log("PieceGoal: ", pieceGoal)
-    console.log("5", board[location[0] + direction][location[1]] === emptyCell)
-
     // only one step forward when free
     if (isOnlyOneForward && isSameXAxis && isEmpty) {
         return true;
@@ -82,7 +71,6 @@ function pawnMovement(board: string[][], location: number[], goal: number[]): bo
     if (isOnlyOneForward && (goal[1] === location[1] + 1 || goal[1] === location[1] - 1) && !isEmpty && getPieceColor(pieceGoal) !== color) {
         return true;
     }
-    console.log("why this not work")
 
     return false;
 }

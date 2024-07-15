@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Display } from './Display';
 import { board } from './types/board';
 import { calculatePossibleMoves, checkIfIsAPiece, checkIfIsFriendlyPiece, checkIfPathIsFree } from './functionality/checks';
+import { movePiece } from './functionality/movement';
 
 
 // chess board layout
@@ -9,29 +10,38 @@ const baseLayout: board = [
   ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
   ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
   [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-  [' ', ' ', ' ', 'B', ' ', ' ', ' ', ' '],
-  [' ', 'r', ' ', ' ', ' ', ' ', ' ', ' '],
-  ['P', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-  ['P', 'R', 'P', 'P', 'P', 'P', ' ', 'P'],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  ['P', 'R', 'P', 'P', 'P', 'P', 'P', 'P'],
   ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
 ]
 
+const testLayout: board = [
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', 'P', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+]
 
 
 export default function App() {
 
   const [board, setBoard] = useState<board>(baseLayout)
   const [selectedPiece, setSelectedPiece] = useState<number[]>()
-  const [madeMoves, setMadeMoves] = useState<string[]>(["wasd"])
+  const [madeMoves, setMadeMoves] = useState<string[]>([])
   const [possibleMoves, setPossibleMoves] = useState<number[][]>([])
 
   function selection(y: number, x: number) {
     const location = [y, x]
-    console.log("possible Moves: ", possibleMoves)
 
     let playerColor = "black"
     if (madeMoves.length % 2 == 0) playerColor = "white"
-    if (checkIfIsAPiece(board, location)) {
+    if (checkIfIsAPiece(board, location) && checkIfIsFriendlyPiece(board, location, playerColor)) {
       // console.log(calculatePossibleMoves(board, location))
       const tmp = calculatePossibleMoves(board, location)
       // console.log("tmp: ", tmp)
@@ -39,9 +49,16 @@ export default function App() {
       return setSelectedPiece(location)
     }
     if (!selectedPiece) return;
+    // check if location is in possible moves
+    const isPossibleMove = possibleMoves.some(move => move[0] === y && move[1] === x);
+    if (!isPossibleMove) return;
+    console.log("location: ", location)
+    console.log("selectedPiece: ", selectedPiece)
 
-
-
+    setBoard(movePiece(board, selectedPiece, location))
+    setPossibleMoves([])
+    const mademove = `${selectedPiece[0]}${selectedPiece[1]}${location[0]}${location[1]}`
+    setMadeMoves([...madeMoves, mademove])
   }
 
   return (
@@ -64,12 +81,13 @@ export default function App() {
                 if (isPossibleMove) {
                   backgroundColor = "bg-green-300"; // TODO: Maybe make it like other chess apps with a circle in the middle
                 }
-
+                const isPiece = cell !== " ";
+                const isClickable = isPiece || isPossibleMove ? "cursor-pointer" : "";
                 return (
                   <div
                     onClick={() => selection(i, j)}
                     key={j + " " + i}
-                    className={`border-2 w-10 h-10 m-0 rounded-lg flex justify-center items-center ${backgroundColor} ${borderColor}`}
+                    className={`border-2 w-10 h-10 m-0 rounded-lg flex justify-center items-center ${backgroundColor} ${borderColor} ${isClickable}`}
                   >
                     {cell}
                   </div>
