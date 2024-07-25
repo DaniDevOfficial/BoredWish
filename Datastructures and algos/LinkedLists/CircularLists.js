@@ -15,25 +15,23 @@ class CircularLists {
         const newNode = new Node(data);
 
         if (this._head === null) {
-            newNode._next = newNode; // Corrected the property to _next
+            newNode._next = newNode; 
             this._head = newNode;
             this._tail = newNode;
         } else {
-            newNode._next = this._head; // Corrected the property to _next
-            this._tail._next = newNode; // Corrected the property to _next
+            newNode._next = this._head; 
+            this._tail._next = newNode; 
             this._tail = newNode;
         }
     }
 }
 
-// Example usage:
 const myCircularList = new CircularLists();
 myCircularList.addNode(1);
 myCircularList.addNode(2);
 myCircularList.addNode(3);
 
-// Testing to see if the circular nature is preserved
 console.log(myCircularList._head._data); // 1
 console.log(myCircularList._head._next._data); // 2
 console.log(myCircularList._head._next._next._data); // 3
-console.log(myCircularList._head._next._next._next._data); // 1, should circle back to head
+console.log(myCircularList._head._next._next._next._data); // 1
