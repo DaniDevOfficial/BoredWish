@@ -3,6 +3,7 @@ package handler
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -16,11 +17,14 @@ type TodoItem struct {
 
 func HandleTask(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	if req.Method == http.MethodGet {
-		getAllTasks(res, req, db)
+		getAllTasks(res, db)
+	}
+	if req.Method == http.MethodPost {
+		createNewTask(res, req, db)
 	}
 }
 
-func getAllTasks(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+func getAllTasks(res http.ResponseWriter, db *sql.DB) {
 	res.Header().Set("Content-Type", "application/json")
 	rows, err := db.Query("SELECT * FROM todoItem")
 	if err != nil {
@@ -40,4 +44,14 @@ func getAllTasks(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	}
 	json.NewEncoder(res).Encode(tasks)
 
+}
+
+func createNewTask(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	var task TodoItem
+	err := json.NewDecoder(req.Body).Decode(&task)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusBadRequest)
+		return
+	} 
+	fmt.Println(task)
 }

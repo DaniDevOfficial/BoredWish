@@ -40,7 +40,7 @@ func handleRequest() {
 	http.HandleFunc("/", helloWorld)
 	http.HandleFunc("/todo", func(w http.ResponseWriter, r *http.Request) {
 		handler.HandleTask(w, r, db) // pass the db connection to handler
-	})	
+	})
 	fmt.Println("Server is listening on port 8001...")
 	log.Fatal(http.ListenAndServe(":8001", nil))
 }
