@@ -22,6 +22,9 @@ func HandleTask(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	if req.Method == http.MethodPost {
 		createNewTask(res, req, db)
 	}
+	if req.Method == http.MethodDelete {
+		deleteTaskById(res, req, db)
+	}
 }
 
 func getAllTasks(res http.ResponseWriter, db *sql.DB) {
@@ -52,6 +55,29 @@ func createNewTask(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusBadRequest)
 		return
-	} 
-	fmt.Println(task)
+	}
+	sqlStatement := "INSERT INTO todoItem (title, description, fulfilled) VALUES (?, ?, ?)"
+	_, err = db.Exec(sqlStatement, task.Title, task.Description, task.Fulfilled)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func deleteTaskById(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	id := req.URL.Query().Get("id")
+	if id == "" {
+		http.Error(res, "Missing task ID", http.StatusBadRequest)
+		return
+	}
+	sqlStatement := "DELETE FROM todoItem WHERE id = ?"
+
+	_, err := db.Exec(sqlStatement, id)
+	if err != nil {
+		log.Println(err)
+
+		return
+	}
+
+	fmt.Fprintf(res, "yaayyy")
 }
