@@ -25,8 +25,10 @@ func HandleTask(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	if req.Method == http.MethodDelete {
 		deleteTaskById(res, req, db)
 	}
+	if req.Method == http.MethodPut {
+		updateTaskById(res, req, db)
+	}
 }
-
 func getAllTasks(res http.ResponseWriter, db *sql.DB) {
 	res.Header().Set("Content-Type", "application/json")
 	rows, err := db.Query("SELECT * FROM todoItem")
@@ -80,4 +82,40 @@ func deleteTaskById(res http.ResponseWriter, req *http.Request, db *sql.DB) {
 	}
 
 	fmt.Fprintf(res, "yaayyy")
+}
+
+func updateTaskById(res http.ResponseWriter, req *http.Request, db *sql.DB) {
+	id := req.URL.Query().Get("id")
+
+	if id == "" {
+		http.Error(res, "No Id Provided", http.StatusBadRequest)
+		return
+	}
+	var existingID string
+	sqlCheckStatement := "SELECT id FROM todoItem WHERE id = ?"
+	err := db.QueryRow(sqlCheckStatement, id).Scan(&existingID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(res, "Task does not exist", http.StatusNotFound)
+			return
+		}
+		http.Error(res, "Database error", http.StatusInternalServerError)
+		fmt.Println("Error checking task existence:", err)
+		return
+	}
+
+	var task TodoItem
+	err = json.NewDecoder(req.Body).Decode(&task)
+	if err != nil {
+		http.Error(res, "Whopsie Daysie", http.StatusInternalServerError)
+		return
+	}
+	sqlUpdateStatement := "UPDATE todoItem SET title = ?, description = ?, fulfilled = ? WHERE id = ?"
+	_, err = db.Exec(sqlUpdateStatement, task.Title, task.Description, task.Fulfilled, id)
+	if err != nil {
+		http.Error(res, "Whopsie Daysie", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(res, "Yayyy it updated")
 }
