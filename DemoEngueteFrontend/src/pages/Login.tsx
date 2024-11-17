@@ -1,27 +1,25 @@
 import React, {useState} from 'react'
 import {Button, Flex, FormControl, FormLabel, Heading, Input, useToast} from '@chakra-ui/react'
-import {CreateNewUser} from "../repo/Auth.ts";
+import {SignIntoAccount} from "../repo/Auth.ts";
 import {useNavigate} from "react-router-dom";
 
 export function Login() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('Dani1-123')
+    const [password, setPassword] = useState('Dani1-123')
 
     const toast = useToast()
     const navigate = useNavigate()
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         try {
-            const resposne = await CreateNewUser(username, email, password)
+            const response = await SignIntoAccount(username, password)
             toast({
                 title: 'Success.',
-                description: 'User created successfully.',
+                description: 'Successfully logged in.',
                 status: 'success',
             })
-            localStorage.setItem('token', resposne['token'])
+            localStorage.setItem('token', response['token'])
             navigate('/user')
-
         } catch (e) {
             console.log(e.message)
             // @ts-ignore
@@ -39,7 +37,6 @@ export function Login() {
                 justifyContent={"center"}
                 alignItems={"center"}
                 direction={"column"}
-
             >
                 <Heading>Login</Heading>
 
@@ -51,10 +48,6 @@ export function Login() {
                     <FormControl id="password" mb={4}>
                         <FormLabel>Password</FormLabel>
                         <Input type="text" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                    </FormControl>
-                    <FormControl id="email" mb={4}>
-                        <FormLabel>Email</FormLabel>
-                        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     </FormControl>
                     <Button type="submit" colorScheme="blue">Submit</Button>
                 </form>
