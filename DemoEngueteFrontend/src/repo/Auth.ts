@@ -1,4 +1,6 @@
 // @ts-ignore
+import {ResponseError} from "../types/General.ts";
+
 const baseUrl = import.meta.env.VITE_API_URL
 
 type RequestCreateNewUser = {
@@ -9,9 +11,6 @@ type RequestCreateNewUser = {
 
 type ResponseAuth = [
     token: string
-]
-type ResponseError = [
-    error: string
 ]
 
 export async function CreateNewUser(username: string, email: string, password: string): Promise<ResponseAuth> {

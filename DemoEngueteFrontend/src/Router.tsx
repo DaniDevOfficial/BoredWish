@@ -4,6 +4,7 @@ import { HomePage } from "./pages/Home";
 import { Signup } from "./pages/Signup.tsx";
 import {Login} from "./pages/Login.tsx";
 import {User} from "./pages/User.tsx";
+import {CreateGroup} from "./pages/CreateGroup.tsx";
 
 
 
@@ -28,6 +29,10 @@ const router = createHashRouter([
       {
         path: "user",
         element: <User />,
+      },
+      {
+        path: "createGroup",
+        element: <CreateGroup />,
       }
     ],
   },

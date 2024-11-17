@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Button, Flex, Heading, IconButton, Input, Spinner, Text, useToast} from "@chakra-ui/react";
+import {Flex, Heading, IconButton, Input, Spinner, Text, useToast} from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
 import {GetUserInformation, User as UserType} from "../repo/User.ts";
 import {GroupCard} from "../components/GroupCard.tsx";
-import {FaPlus, FaSignOutAlt} from "react-icons/fa";
+import {FaPlus} from "react-icons/fa";
 
 export function User() {
     const [isLoading, setIsLoading] = useState(true);
@@ -46,16 +46,24 @@ export function User() {
         );
     }
 
-    console.log(userData);
     return (
         <Flex alignItems={"center"} justifyContent={"center"} flexDir={"column"}>
             <Heading>{userData.username}</Heading>
             <Text>{userData.userId}</Text>
             <Input value={token}></Input>
-            <IconButton aria-label="Logout" icon={<FaPlus />} onClick={() => {navigate('/createGroup')}}/>
-            {userData.groups && userData.groups.map((group) => (
-                <GroupCard key={group.groupId} group={group}/>
-            ))}
+            <IconButton aria-label="Logout" icon={<FaPlus/>} onClick={() => {
+                navigate('/createGroup')
+            }}/>
+            <Flex
+                mt={"10px"}
+                flexDir={"column"}
+                gap={"10px"}
+            >
+
+                {userData.groups && userData.groups.map((group) => (
+                    <GroupCard key={group.groupId} group={group}/>
+                ))}
+            </Flex>
         </Flex>
     );
 }
